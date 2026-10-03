@@ -30,12 +30,12 @@ jobs:
       - name: Run Scraper
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python scraper.py
+          TARGET_TICKERS: ${{ secrets.TARGET_TICKERS }}
+        run: python main.py
 
       - name: Commit and Push sent_records.txt
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add sent_records.txt
-          git commit -m "Auto-update sent_records.txt" || echo "No new records to commit"
-          git push
+          git diff --staged --quiet || (git commit -m "Auto-update sent_records.txt" && git pull --rebase origin main && git push)

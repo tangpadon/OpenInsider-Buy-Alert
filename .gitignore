@@ -2,5 +2,8 @@
 .env
 __pycache__/
 
+# Private tickers for local run
+tickers.local.txt
+
 # Mac OS
 .DS_Store

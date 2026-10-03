@@ -1,5 +1,21 @@
-NVDA
-AMD
-BLA
-BLA
-BLA
+# ==============================================================================
+# TEMPLATE: Target Stocks Configuration
+# ==============================================================================
+# This file serves as a TEMPLATE only and is NOT read by the bot.
+# Do NOT list your private stocks in this file if your repository is public!
+#
+# HOW TO CONFIGURE YOUR TARGET STOCKS:
+#
+# 1. For GitHub Actions (Cloud 24/7):
+#    Go to your GitHub Repository:
+#    Settings -> Secrets and variables -> Actions -> New repository secret
+#    - Name: TARGET_TICKERS
+#    - Secret: Comma-separated tickers, e.g.:
+#              NVDA,AMD,PLTR,TSLA,SMCI
+#
+# 2. For Local Testing on your PC:
+#    Option A (Recommended): Add to your .env file:
+#         TARGET_TICKERS="NVDA,AMD,PLTR"
+#    Option B: Create a file named 'tickers.local.txt' (ignored by git)
+#         with one ticker per line.
+# ==============================================================================
