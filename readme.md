@@ -31,29 +31,42 @@ Click the **Fork** button at the top right of this repository to copy it to your
 
 ### 2. Configure Discord Webhook & Private Watchlist (Secrets)
 
-To keep your watchlist private while maintaining a public repository:
+To keep your watchlist 100% private while maintaining a public repository:
 
 1. **Get Discord Webhook URL:**
    - In Discord, go to **Server Settings** > **Integrations** > **Webhooks**.
    - Click **New Webhook**, select the target channel, and click **Copy Webhook URL**.
 
-2. **Add Secrets to your GitHub Repository:**
-   - Go to your forked GitHub repository > **Settings** > **Secrets and variables** > **Actions**.
-   - Click **New repository secret** and add:
+2. **Setup your Watchlist via Secret GitHub Gist (Recommended - Easy to Edit):**
+   GitHub Secrets cannot be viewed once saved, which makes editing painful. Using a **Secret GitHub Gist** solves this:
+   - Go to [gist.github.com](https://gist.github.com).
+   - Filename: `tickers.txt`.
+   - Content: Enter the stocks you want to monitor (one per line):
+     ```text
+     NVDA
+     AMD
+     PLTR
+     TSLA
+     ```
+   - Click **Create secret gist** at the bottom (invisible to search & profiles).
+   - Click the **Raw** button at the top-right of your file content.
+   - Copy the URL from your browser address bar (e.g. `https://gist.githubusercontent.com/.../raw/.../tickers.txt`).
+
+3. **Add Secrets to your GitHub Repository:**
+   - Go to your GitHub repository > **Settings** > **Secrets and variables** > **Actions**.
+   - Click **New repository secret**:
      - **Name:** `DISCORD_WEBHOOK_URL`
      - **Secret:** *(Paste your Discord Webhook URL)*
-   - Click **New repository secret** again to add your private watchlist:
-     - **Name:** `TARGET_TICKERS`
-     - **Secret:** Comma-separated list of stock tickers you want to monitor:
-       ```text
-       NVDA,AMD,PLTR,TSLA,SMCI
-       ```
+   - Click **New repository secret** again:
+     - **Name:** `TICKERS_URL`
+     - **Secret:** *(Paste your Raw Secret Gist URL)*
 
 > [!TIP]
-> **Why this keeps your stocks private:**
-> - `tickers.txt` is strictly an instructional template and is **never** read by the bot, preventing accidental commits of private tickers.
-> - The bot reads `TARGET_TICKERS` securely from your GitHub Secrets.
-> - GitHub automatically hides Secrets from visitors and masks console logs.
+> **Why this is the best setup:**
+> - Whenever you want to add or remove a stock in the future, just open your Gist link and click **Edit** — no retyping needed!
+> - The bot fetches the latest stock list automatically on each scheduled run.
+> - Your stock list remains 100% hidden from public visitors.
+> - *(Alternative)* If you prefer not to use Gist, you can create a Secret named `TARGET_TICKERS` with comma-separated values (e.g. `NVDA,AMD,PLTR`).
 
 ---
 

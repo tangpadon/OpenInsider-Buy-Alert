@@ -30,6 +30,7 @@ jobs:
       - name: Run Scraper
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TICKERS_URL: ${{ secrets.TICKERS_URL }}
           TARGET_TICKERS: ${{ secrets.TARGET_TICKERS }}
         run: python main.py
 

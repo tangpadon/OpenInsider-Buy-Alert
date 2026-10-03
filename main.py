@@ -16,13 +16,30 @@ LOCAL_TICKERS_FILE = "tickers.local.txt"
 
 def load_tickers():
     """
-    Load target tickers from private sources:
-    1. Environment variable TARGET_TICKERS (GitHub Secrets or .env)
-    2. tickers.local.txt (local file ignored by git)
-    
-    tickers.txt is strictly a template and is no longer used directly to protect privacy.
+    Load target tickers with privacy priority:
+    1. Secret Gist URL: TICKERS_URL (Environment variable / GitHub Secret)
+    2. Comma-separated string: TARGET_TICKERS (Environment variable / GitHub Secret / .env)
+    3. Local private file: tickers.local.txt (ignored by git)
     """
-    # 1. From environment variable (e.g. TARGET_TICKERS="NVDA,AMD,PLTR")
+    # 1. From remote private URL (Recommended: Secret GitHub Gist raw URL)
+    tickers_url = os.environ.get("TICKERS_URL", "").strip()
+    if tickers_url:
+        try:
+            res = requests.get(tickers_url, timeout=15)
+            if res.status_code == 200:
+                cleaned = []
+                for line in res.text.splitlines():
+                    t = line.strip().upper()
+                    if t and not t.startswith("#") and t not in cleaned:
+                        cleaned.append(t)
+                if cleaned:
+                    return cleaned, True
+            else:
+                print(f"Warning: Failed to fetch tickers from TICKERS_URL (HTTP {res.status_code}).")
+        except Exception as e:
+            print(f"Warning: Error fetching tickers from TICKERS_URL: {e}")
+
+    # 2. From environment variable (e.g. TARGET_TICKERS="NVDA,AMD,PLTR")
     env_tickers = os.environ.get("TARGET_TICKERS", "").strip()
     if env_tickers:
         cleaned = []
@@ -33,7 +50,7 @@ def load_tickers():
         if cleaned:
             return cleaned, True
 
-    # 2. From local ignored file (for private testing on PC)
+    # 3. From local ignored file (for private testing on PC)
     if os.path.exists(LOCAL_TICKERS_FILE):
         with open(LOCAL_TICKERS_FILE, "r", encoding="utf-8") as f:
             cleaned = []
@@ -70,8 +87,8 @@ def check_insider():
     tickers_list, is_private = load_tickers()
     if not tickers_list:
         print("Warning: No target tickers found.")
-        print("Please configure TARGET_TICKERS in GitHub Secrets or in your local .env file.")
-        print("See tickers.txt for instructions and format template.\n")
+        print("Please configure TICKERS_URL (Secret Gist URL) or TARGET_TICKERS in GitHub Secrets.")
+        print("See tickers.txt or readme.md for instructions.\n")
         return
 
     sent_records = load_sent_records()

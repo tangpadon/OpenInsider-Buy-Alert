@@ -1,21 +1,35 @@
 # ==============================================================================
 # TEMPLATE: Target Stocks Configuration
 # ==============================================================================
-# This file serves as a TEMPLATE only and is NOT read by the bot.
+# This file serves as a TEMPLATE only and is NOT read directly by the bot.
 # Do NOT list your private stocks in this file if your repository is public!
 #
-# HOW TO CONFIGURE YOUR TARGET STOCKS:
+# HOW TO CONFIGURE YOUR TARGET STOCKS (CHOOSE ONE):
 #
-# 1. For GitHub Actions (Cloud 24/7):
-#    Go to your GitHub Repository:
+# METHOD 1 (RECOMMENDED - Easy to edit anytime via GitHub Gist):
+# 1. Go to https://gist.github.com
+# 2. Name the file `tickers.txt` and enter your stock tickers (one per line):
+#      NVDA
+#      AMD
+#      PLTR
+#      TSLA
+# 3. Click "Create secret gist" at the bottom.
+# 4. Click the "Raw" button and copy the URL from your browser address bar.
+# 5. In your GitHub Repository:
 #    Settings -> Secrets and variables -> Actions -> New repository secret
-#    - Name: TARGET_TICKERS
-#    - Secret: Comma-separated tickers, e.g.:
-#              NVDA,AMD,PLTR,TSLA,SMCI
+#    - Name: TICKERS_URL
+#    - Secret: Paste the Raw Gist URL
+#    => Now you can edit your stock list anytime on Gist without retyping!
 #
-# 2. For Local Testing on your PC:
-#    Option A (Recommended): Add to your .env file:
-#         TARGET_TICKERS="NVDA,AMD,PLTR"
-#    Option B: Create a file named 'tickers.local.txt' (ignored by git)
-#         with one ticker per line.
+# METHOD 2 (Direct Secret):
+# In your GitHub Repository:
+# Settings -> Secrets and variables -> Actions -> New repository secret
+# - Name: TARGET_TICKERS
+# - Secret: NVDA,AMD,PLTR,TSLA
+#
+# METHOD 3 (Local Testing on your PC):
+# Option A: In your .env file:
+#           TICKERS_URL="https://gist.githubusercontent.com/.../raw/tickers.txt"
+#           or TARGET_TICKERS="NVDA,AMD,PLTR"
+# Option B: Create 'tickers.local.txt' (ignored by git) with one ticker per line.
 # ==============================================================================
